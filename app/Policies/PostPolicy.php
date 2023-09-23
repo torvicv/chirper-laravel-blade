@@ -25,6 +25,7 @@ class PostPolicy
     public function view(User $user, Post $post): bool
     {
         //
+
         return $user->permisos->where('pizarra', 'posts')->first()->editar;
 
     }

@@ -20,7 +20,11 @@ class PostController extends Controller
     {
         //
         // dd(Auth::user()->permisos->where('pizarra', 'posts')->first()->ver);
-        return 'hola';
+        $permisos = Auth::user()->permisos->where('pizarra', 'posts')->first();
+        return view('posts.index', [
+            'posts' => Post::all(),
+            'permisos' => $permisos,
+        ]);
     }
 
     /**

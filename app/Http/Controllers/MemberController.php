@@ -4,15 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Models\Member;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MemberController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Member::class);
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         //
+        $permisos = Auth::user()->permisos->where('pizarra', 'members')->first();
+        return view('members.index', [
+            'members' => Member::all(),
+            'permisos' => $permisos,
+        ]);
     }
 
     /**
@@ -37,6 +47,8 @@ class MemberController extends Controller
     public function show(Member $member)
     {
         //
+        $this->authorize('view', $member);
+        return 'edit';
     }
 
     /**
@@ -45,6 +57,8 @@ class MemberController extends Controller
     public function edit(Member $member)
     {
         //
+        $this->authorize('view', $member);
+        return 'edit';
     }
 
     /**

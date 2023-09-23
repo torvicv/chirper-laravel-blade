@@ -14,16 +14,17 @@ class MemberPolicy
     public function viewAny(User $user): bool
     {
         //
-        return false;
+        return $user->permisos->where('pizarra', 'members')->first()->ver;;
     }
 
     /**
      * Determine whether the user can view the model.
+     * Para que funcione el view es necesario el update también.
      */
     public function view(User $user, Member $member): bool
     {
         //
-        return false;
+        return $user->permisos->where('pizarra', 'members')->first()->editar;
     }
 
     /**
@@ -41,7 +42,7 @@ class MemberPolicy
     public function update(User $user, Member $member): bool
     {
         //
-        return false;
+        return $user->permisos->where('pizarra', 'members')->first()->editar;
     }
 
     /**

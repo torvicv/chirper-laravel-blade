@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class PostSeeder extends Seeder
 {
@@ -17,18 +18,26 @@ class PostSeeder extends Seeder
         DB::table('posts')->insert([
             'title' => 'blog 1',
             'body' => fake()->text(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         DB::table('posts')->insert([
             'title' => 'blog 2',
             'body' => fake()->text(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         DB::table('posts')->insert([
             'title' => 'blog 3',
             'body' => fake()->text(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
         DB::table('posts')->insert([
             'title' => 'blog 4',
             'body' => fake()->text(),
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
         ]);
 
     }
