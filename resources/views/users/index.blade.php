@@ -1,7 +1,13 @@
 <x-app-layout>
     <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+        {{-- hace falta prefijar con App\Models\ el modelo --}}
+        @can('create', App\Models\User::class)
+        <x-nav-link :href="route('user.create')">
+            {{__('Create user')}}
+        </x-nav-link>
+        @endcan
         <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
-            @foreach ($posts as $post)
+            @foreach ($users as $user)
                 <div class="p-6 flex space-x-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-600 -scale-x-100" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -11,14 +17,14 @@
                     <div class="flex-1">
                         <div class="flex justify-between items-center">
                             <div>
-                                <span class="text-gray-800">{{ $post->user->name }}</span>
+                                <span class="text-gray-800">{{ $user->name }}</span>
                                 <small
-                                    class="ml-2 text-sm text-gray-600">{{ $post->created_at->format('j M Y, g:i a') }}</small>
-                                @unless ($post->created_at->eq($post->updated_at))
+                                    class="ml-2 text-sm text-gray-600">{{ $user->created_at->format('j M Y, g:i a') }}</small>
+                                @unless ($user->created_at->eq($user->updated_at))
                                     <small class="text-sm text-gray-600"> &middot; {{ __('edited') }}</small>
                                 @endunless
                             </div>
-                            @if ($permisos->editar)
+                            @can ('view', [App\Models\User::class, $user])
                                 <x-dropdown>
                                     <x-slot name="trigger">
                                         <button>
@@ -30,14 +36,28 @@
                                         </button>
                                     </x-slot>
                                     <x-slot name="content">
-                                        <x-dropdown-link :href="route('post.edit', $post)">
-                                            {{ __('Edit') }}
+                                        <x-dropdown-link :href="route('user.show', $user)">
+                                            {{ __('Show') }}
                                         </x-dropdown-link>
+                                        @can ('update', [App\Models\User::class, $user])
+                                            <x-dropdown-link :href="route('user.edit', $user)">
+                                                {{ __('Edit') }}
+                                            </x-dropdown-link>
+                                        @endcan
+                                        @can ('delete', [App\Models\User::class, $user])
+                                            <form action="{{ route('user.delete', ['user' => $user]) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <x-primary-button>
+                                                    {{ __('Delete') }}
+                                                </x-primary-button>
+                                            </form>
+                                        @endcan
                                     </x-slot>
                                 </x-dropdown>
-                            @endif
+                            @endcan
                         </div>
-                        <p class="mt-4 text-lg text-gray-900">{{ $post->message }}</p>
+                        <p class="mt-4 text-lg text-gray-900">{{ $user->message }}</p>
                     </div>
                 </div>
             @endforeach

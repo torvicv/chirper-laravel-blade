@@ -12,6 +12,14 @@ class Permiso extends Model
 
     protected $table = 'permisos';
 
+    protected $fillable = [
+        'pizarra',
+        'ver',
+        'editar',
+        'borrar',
+        'user_id',
+    ];
+
     public function user():BelongsTo {
         return $this->belongsTo(User::class);
     }
