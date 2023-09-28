@@ -35,6 +35,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/posts', [PostController::class, 'index'])->name('post.index');
     Route::get('/posts/{post}', [PostController::class, 'show'])->name('post.show');
     Route::get('/post/{post}', [PostController::class, 'edit'])->name('post.edit');
+    Route::get('/posts/post/create', [PostController::class, 'create'])->name('post.create');
+    Route::post('/post', [PostController::class, 'store'])->name('post.store');
+    Route::put('/post/{post}', [PostController::class, 'update'])->name('post.update');
+    Route::delete('/post/{post}', [PostController::class, 'destroy'])->name('post.delete');
     Route::get('/members', [MemberController::class, 'index'])->name('member.index');
     Route::get('/members/{member}', [MemberController::class, 'show'])->name('member.show');
     Route::get('/member/{member}', [MemberController::class, 'edit'])->name('member.edit');
@@ -43,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/user/{user}', [UserController::class, 'edit'])->name('user.edit');
     Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update');
     Route::get('/users/user/create', [UserController::class, 'create'])->name('user.create');
-    Route::post('/user', [UserController::class, 'store'])->name('user.store');
+    Route::post('/user', [UserController::class, 'store'])->name('user.store');Route::get('/users/user/create', [UserController::class, 'create'])->name('user.create');
     Route::delete('/user/{user}', [UserController::class, 'destroy'])->name('user.delete');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

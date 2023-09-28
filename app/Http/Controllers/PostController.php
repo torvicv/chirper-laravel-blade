@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Post;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,11 +22,8 @@ class PostController extends Controller
     public function index()
     {
         //
-        // dd(Auth::user()->permisos->where('pizarra', 'posts')->first()->ver);
-        $permisos = Auth::user()->permisos->where('pizarra', 'posts')->first();
         return view('posts.index', [
-            'posts' => Post::all(),
-            'permisos' => $permisos,
+            'posts' => Post::all()
         ]);
     }
 
@@ -33,14 +33,25 @@ class PostController extends Controller
     public function create()
     {
         //
+        $this->authorize('create', Auth::user());
+        return view('posts.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
         //
+        $this->authorize('create', Auth::user());
+        $user = User::find(Auth::user()->id);
+        $post = new Post;
+        $post->fill($request->all());
+        $post->created_at = Carbon::now();
+        $post->updated_at = Carbon::now();
+        $user->posts()->save($post);
+        $user->save();
+        return to_route('post.index');
     }
 
     /**
@@ -49,8 +60,11 @@ class PostController extends Controller
     public function show(Post $post)
     {
         //
-        $this->authorize('update', $post);
-        return 'show';
+        $this->authorize('view', $post);
+        $postShow = Post::find($post->id);
+        return view('posts.show', [
+            'post' => $postShow
+        ]);
     }
 
     /**
@@ -60,15 +74,24 @@ class PostController extends Controller
     {
         //
         $this->authorize('update', $post);
-        return 'edit';
+        $post = Post::find($post->id);
+        return view('posts.edit', [
+            'post' => $post
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(PostRequest $request, Post $post)
     {
         //
+        $this->authorize('restore', $post);
+        $post = Post::find($post->id);
+        $post->fill($request->all());
+        $post->updated_at = Carbon::now();
+        $post->update();
+        return to_route('post.index');
     }
 
     /**
@@ -77,5 +100,9 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+        $this->authorize('delete', $post);
+        $post = Post::find($post->id);
+        $post->delete();
+        return to_route('post.index');
     }
 }

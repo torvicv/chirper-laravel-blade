@@ -25,8 +25,7 @@ class PostPolicy
     public function view(User $user, Post $post): bool
     {
         //
-
-        return $user->permisos->where('pizarra', 'posts')->first()->editar;
+        return $user->permisos->where('pizarra', 'posts')->first()->ver;
 
     }
 
@@ -36,7 +35,7 @@ class PostPolicy
     public function create(User $user): bool
     {
         //
-        return false;
+        return $user->permisos->where('pizarra', 'posts')->first()->editar;
     }
 
     /**
@@ -45,7 +44,7 @@ class PostPolicy
     public function update(User $user, Post $post): bool
     {
         //
-        return true;
+        return $user->permisos->where('pizarra', 'posts')->first()->editar;
     }
 
     /**
@@ -54,7 +53,7 @@ class PostPolicy
     public function delete(User $user, Post $post): bool
     {
         //
-        return false;
+        return $user->permisos->where('pizarra', 'posts')->first()->borrar;
     }
 
     /**
@@ -63,7 +62,7 @@ class PostPolicy
     public function restore(User $user, Post $post): bool
     {
         //
-        return false;
+        return $user->permisos->where('pizarra', 'posts')->first()->editar;
     }
 
     /**

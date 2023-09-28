@@ -18,24 +18,28 @@ class PostSeeder extends Seeder
         DB::table('posts')->insert([
             'title' => 'blog 1',
             'body' => fake()->text(),
+            'user_id' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         DB::table('posts')->insert([
             'title' => 'blog 2',
             'body' => fake()->text(),
+            'user_id' => 1,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         DB::table('posts')->insert([
             'title' => 'blog 3',
             'body' => fake()->text(),
+            'user_id' => 2,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);
         DB::table('posts')->insert([
             'title' => 'blog 4',
             'body' => fake()->text(),
+            'user_id' => 2,
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
         ]);

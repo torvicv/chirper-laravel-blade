@@ -18,15 +18,21 @@
                     <x-nav-link :href="route('chirps.index')" :active="request()->routeIs('chirps.index')">
                         {{ __('Chirps') }}
                     </x-nav-link>
+                    @can('view-members')
                     <x-nav-link :href="route('member.index')" :active="request()->routeIs('member.index')">
-                        {{ __('Posts') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('post.index')" :active="request()->routeIs('post.index')">
                         {{ __('Members') }}
                     </x-nav-link>
+                    @endcan
+                    @can('view-posts')
+                    <x-nav-link :href="route('post.index')" :active="request()->routeIs('post.index')">
+                        {{ __('Posts') }}
+                    </x-nav-link>
+                    @endcan
+                    @can('view-users')
                     <x-nav-link :href="route('user.index')" :active="request()->routeIs('user.index')">
                         {{ __('Users') }}
                     </x-nav-link>
+                    @endcan
                 </div>
             </div>
 
