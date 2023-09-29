@@ -18,10 +18,8 @@ class MemberController extends Controller
     public function index()
     {
         //
-        $permisos = Auth::user()->permisos->where('pizarra', 'members')->first();
         return view('members.index', [
-            'members' => Member::all(),
-            'permisos' => $permisos,
+            'members' => Member::all()
         ]);
     }
 
@@ -31,6 +29,8 @@ class MemberController extends Controller
     public function create()
     {
         //
+        $this->authorize('create', Auth::user());
+        return view('members.create');
     }
 
     /**
@@ -39,6 +39,11 @@ class MemberController extends Controller
     public function store(Request $request)
     {
         //
+        $this->authorize('create', Auth::user());
+        $member = new Member;
+        $member->fill($request->all());
+        $member->save();
+        return to_route('member.index');
     }
 
     /**
@@ -48,7 +53,9 @@ class MemberController extends Controller
     {
         //
         $this->authorize('view', $member);
-        return 'edit';
+        return view('members.show', [
+            'member' => $member
+        ]);
     }
 
     /**
@@ -57,8 +64,10 @@ class MemberController extends Controller
     public function edit(Member $member)
     {
         //
-        $this->authorize('view', $member);
-        return 'edit';
+        $this->authorize('update', $member);
+        return view('members.edit', [
+            'member' => $member
+        ]);
     }
 
     /**
@@ -67,6 +76,11 @@ class MemberController extends Controller
     public function update(Request $request, Member $member)
     {
         //
+        $this->authorize('restore', $member);
+        $member = Member::findOrFail($member->id);
+        $member->fill($request->all());
+        $member->update();
+        return to_route('member.show', ['member' => $member->id]);
     }
 
     /**
@@ -75,5 +89,9 @@ class MemberController extends Controller
     public function destroy(Member $member)
     {
         //
+        $this->authorize('delete', $member);
+        $member = Member::findOrFail($member);
+        $member->delete();
+        return to_route('member.index');
     }
 }

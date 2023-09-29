@@ -14,7 +14,7 @@ class MemberPolicy
     public function viewAny(User $user): bool
     {
         //
-        return $user->permisos->where('pizarra', 'members')->first()->ver;;
+        return $user->permisos->where('pizarra', 'members')->first()->ver;
     }
 
     /**
@@ -24,7 +24,7 @@ class MemberPolicy
     public function view(User $user, Member $member): bool
     {
         //
-        return $user->permisos->where('pizarra', 'members')->first()->editar;
+        return $user->permisos->where('pizarra', 'members')->first()->ver;
     }
 
     /**
@@ -33,7 +33,7 @@ class MemberPolicy
     public function create(User $user): bool
     {
         //
-        return false;
+        return $user->permisos->where('pizarra', 'members')->first()->editar;
     }
 
     /**
@@ -51,7 +51,7 @@ class MemberPolicy
     public function delete(User $user, Member $member): bool
     {
         //
-        return false;
+        return $user->permisos->where('pizarra', 'members')->first()->borrar;
     }
 
     /**
@@ -60,7 +60,7 @@ class MemberPolicy
     public function restore(User $user, Member $member): bool
     {
         //
-        return false;
+        return $user->permisos->where('pizarra', 'members')->first()->editar;
     }
 
     /**

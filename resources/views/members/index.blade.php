@@ -1,5 +1,10 @@
 <x-app-layout>
     <div class="max-w-2xl mx-auto p-4 sm:p-6 lg:p-8">
+        @can('create', App\Models\Member::class)
+        <x-nav-link :href="route('member.create')">
+            {{__('Create member')}}
+        </x-nav-link>
+        @endcan
         <div class="mt-6 bg-white shadow-sm rounded-lg divide-y">
             @foreach ($members as $member)
                 <div class="p-6 flex space-x-2">
@@ -18,7 +23,7 @@
                                     <small class="text-sm text-gray-600"> &middot; {{ __('edited') }}</small>
                                 @endunless
                             </div>
-                            @if ($permisos->editar)
+                            @can ('view', [App\Models\Member::class, $member])
                                 <x-dropdown>
                                     <x-slot name="trigger">
                                         <button>
@@ -30,12 +35,26 @@
                                         </button>
                                     </x-slot>
                                     <x-slot name="content">
-                                        <x-dropdown-link :href="route('member.edit', $member)">
-                                            {{ __('Edit') }}
+                                        <x-dropdown-link :href="route('member.show', $member)">
+                                            {{ __('Show') }}
                                         </x-dropdown-link>
+                                        @can ('update', [App\Models\Member::class, $member])
+                                            <x-dropdown-link :href="route('member.edit', $member)">
+                                                {{ __('Edit') }}
+                                            </x-dropdown-link>
+                                        @endcan
+                                        @can ('delete', [App\Models\Member::class, $member])
+                                            <form action="{{ route('member.delete', ['member' => $member]) }}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <x-primary-button>
+                                                    {{ __('Delete') }}
+                                                </x-primary-button>
+                                            </form>
+                                        @endcan
                                     </x-slot>
                                 </x-dropdown>
-                            @endif
+                            @endcan
                         </div>
                         <p class="mt-4 text-lg text-gray-900">{{ $member->message }}</p>
                     </div>
